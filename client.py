@@ -1,3 +1,5 @@
+import os
+
 import discord
 from discord.ext import commands
 
@@ -11,6 +13,11 @@ class Client(commands.Bot):
             help_command=commands.DefaultHelpCommand(),
             intents=intents
         )
+
+    async def setup_hook(self):
+        for filename in os.listdir("./commands"):
+            if filename.endswith(".py"):
+                await self.load_extension(f"commands.{filename[:-3]}")
 
     async def on_ready(self):
         print("=" * 40)
